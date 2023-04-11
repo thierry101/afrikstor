@@ -1,0 +1,480 @@
+
+{% extends 'base.html' %}
+{% block title %}
+    view cart | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+{% load spaceNumber %}
+
+{% block content %}
+
+    <!-- Begin Main Content Area -->
+    <main class="main-content">
+        <div class="breadcrumb-area breadcrumb-height" data-bg-image="{% static 'images/breadcrumb/bg/1-1-1919x388.jpg' %}">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-item">
+                            <h2 class="breadcrumb-heading">Caisse</h2>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'home:homeIndex' %}">Acceuil</a>
+                                </li>
+                                <li>Caisse</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="checkout-area section-space-y-axis-100">
+            <div class="container-fluid ml-5">
+                <div class="row">
+                    {% if request.user.is_authenticated %}
+                    <div class="col-12">
+                        <div class="coupon-accordion">
+                            <h3>Avez-vous un coupon? <span id="showcoupon"> Cliquez ici pour entrer le code</span></h3>
+                            <div id="checkout_coupon" class="coupon-checkout-content">
+                                <div class="coupon-info">
+                                    <form action="javascript:void(0)">
+                                        <p class="checkout-coupon">
+                                            <input id="coupon_code" placeholder="Code du coupon" type="text">
+                                            <input id="applyCoupon" class="coupon-inner_btn" value="Valider" type="submit">
+                                        </p>
+                                    </form>
+                                </div>
+                                <div id="validationServer03Feedback" class="text-danger">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-lg-7 col-12">
+                        <form action="javascript:void(0)">
+                            <div class="checkbox-form">
+                                <h3 class="text-center">Adresse de livraison</h3>
+                                {% if not request.user.is_authenticated %}
+                              <div class="row">
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Nom</strong> </label>
+                                        <input id="idName" placeholder="Nom" type="text">
+                                        <div id="idNameError" class="text-danger">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Prénom</strong> </label>
+                                        <input id="idSurname" placeholder="Prénom" type="text">
+                                        <div id="idSurnameError" class="text-danger">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Email</strong> <span class="required">*</span></label>
+                                        <input id="idEmail" type="text" placeholder="Email">
+                                        <div id="idEmailError" class="text-danger">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Numéro de téléPhone</strong> <span class="required">*</span></label>
+                                        <input id="idPhone" type="text" placeholder="Numéro de téléPhone">
+                                        <div id="idPhoneError" class="text-danger">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Pays</strong> <span class="required">*</span></label>
+                                        <input id="idCountry" type="text" placeholder="Pays">
+                                        <div id="idCountryError" class="text-danger">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-12">
+                                    <div class="myniceselect country-select clearfix">
+                                        <label>Pays <span class="required">*</span></label>
+                                        <select class="myniceselect nice-select wide">
+                                            <option data-display="Bangladesh">Bangladesh</option>
+                                            <option value="uk">London</option>
+                                            <option value="rou">Romania</option>
+                                            <option value="fr">French</option>
+                                            <option value="de">Germany</option>
+                                            <option value="aus">Australia</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Ville</strong> <span class="required">*</span></label>
+                                        <input id="idCity" type="text" placeholder="Ville">
+                                        <div id="idCityError" class="text-danger">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Quartier</strong> <span class="required">*</span></label>
+                                        <input id="idAddresse" placeholder="Quartier" type="text">
+                                        <div id="idAddressError" class="text-danger">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="checkout-form-list">
+                                        <label><strong>Position exacte</strong></label>
+                                        <input id="idExactAddr" placeholder="Position exacte. (optionel)" type="text">
+                                        <div id="idPositionError" class="">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                       
+                              </div>
+                                {% else %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead class="table-secondary">
+                                              <tr>
+                                                <th class="col-md-1.5" scope="col">Sélection</th>
+                                                <th class="col-md-1.5" scope="col">Pays</th>
+                                                <th class="col-md-1.5" scope="col">Ville</th>
+                                                <th class="col-md-1.5" scope="col">Adresse</th>
+                                                <th class="col-md-2.5" scope="col">Nom et prénom</th>
+                                                <th class="col-md-1.5" scope="col">Téléphone</th>
+                                                <th class="col-md-1" scope="col">Action</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for addr in addresses %}
+                                              <tr>
+                                                <th scope="row">
+                                                    <div class="form-check">
+                                                        <input id="idAddress" class="form-check-input" type="radio" name="flexRadioDefault" value="{{addr.id}}" 
+                                                        {% if addr.default %} checked {% endif %}
+                                                        >
+                                                      </div>
+                                                </th>
+                                                <td>{{addr.country}}</td>
+                                                <td>{{addr.city}}</td>
+                                                <td>{{addr.address}}</td>
+                                                <td>{{addr.name}} {{addr.surname}}</td>
+                                                <td>{{addr.phone}}</td>
+                                                <td>
+                                                    <button title="Retirer" type="button" class="btn btn-danger deleteId" id="{{item.id}}">
+                                                        <i class="pe-7s-close" id="{{item.id}}" data-tippy="Retirer" data-tippy-inertia="true"
+                                                        data-tippy-animation="shift-away" data-tippy-delay="50"
+                                                        data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
+                                                    </button>
+                                                </td>
+                                              </tr>
+                                              {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="different-address">
+                                    <div class="ship-different-title">
+                                        <h3>
+                                            <label>Envoyer à une adresse différente ?</label>
+                                            <input id="ship-box" type="checkbox">
+                                        </h3>
+                                    </div>
+                                    <div id="ship-box-info" class="row">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Nom </label>
+                                                    <input id="idName" placeholder="" type="text">
+                                                    <div id="idNameError" class="text-danger">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Prénom </label>
+                                                    <input id="idSurname" placeholder="" type="text">
+                                                    <div id="idSurnameError" class="text-danger">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Numéro de téléPhone <span class="required">*</span></label>
+                                                    <input id="idPhone" type="text">
+                                                    <div id="idPhoneError" class="text-danger">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Pays <span class="required">*</span></label>
+                                                    <input id="idCountry" type="text">
+                                                    <div id="idCountryError" class="text-danger">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-md-12">
+                                                <div class="myniceselect country-select clearfix">
+                                                    <label>Pays <span class="required">*</span></label>
+                                                    <select class="myniceselect nice-select wide">
+                                                        <option data-display="Bangladesh">Bangladesh</option>
+                                                        <option value="uk">London</option>
+                                                        <option value="rou">Romania</option>
+                                                        <option value="fr">French</option>
+                                                        <option value="de">Germany</option>
+                                                        <option value="aus">Australia</option>
+                                                    </select>
+                                                </div>
+                                            </div> -->
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Ville <span class="required">*</span></label>
+                                                    <input id="idCity" type="text">
+                                                    <div id="idCityError" class="text-danger">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <label>Quartier <span class="required">*</span></label>
+                                                    <input id="idAddresse" placeholder="Street address" type="text">
+                                                    <div id="idAddressError" class="text-danger">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>  
+                                            <div class="col-md-6">
+                                                <div class="checkout-form-list">
+                                                    <input id="idExactAddr" placeholder="Position exacte. (optionel)" type="text">
+                                                    <div id="idPositionError" class="">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="idSelectDefault">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                      Addresse par défaut ?
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="order-button-payment">
+                                                <input id="submitNewAddr" value="Enregistrer" type="submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order-notes">
+                                        <div class="checkout-form-list checkout-form-list-2">
+                                            <label>Order Notes</label>
+                                            <textarea id="checkout-mess" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-5 col-12">
+                        <div class="your-order">
+                            <h3 class="text-center">Votre commande</h3>
+                            {% if request.user.is_authenticated %}
+                            <div class="your-order-table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="cart-product-name">Article</th>
+                                            <th class="cart-product-total">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <input type="hidden" name="" value="{{idOrder}}" id="idOrder">
+                                        {% for item in allItems %}
+                                        <tr class="cart_item">
+                                            <td class="cart-product-name">{{item.product.title}}<strong
+                                            class="product-quantity">
+                                            × {{item.quantity}}</strong></td>
+                                            <td class="cart-product-total"><span class="amount">{{item.total | floatformat:0|intspace}} Fcfa</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="cart-subtotal">
+                                            <th>Sous-total</th>
+                                            <td><span class="amount">{{bigTotal | floatformat:0|intspace}} Fcfa</span></td>
+                                        </tr>
+                                        <tr class="cart-subtotal">
+                                            <th>Réduction</th>
+                                            <td id="idTotalReduction"><span class="amount">{{reduction | floatformat:0|intspace}} Fcfa</span></td>
+                                        </tr>
+                                        <tr class="order-total">
+                                            <th>Grand Total</th>
+                                            <td id="idBiTotal"><strong><span class="amount">{{newBigTotal | floatformat:0|intspace}} Fcfa</span></strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="your-order-table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="cart-product-name">Article</th>
+                                            <th class="cart-product-total">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <input type="hidden" name="" value="{{idOrder}}" id="idOrder">
+                                        {% for item in allItems %}
+                                        <tr class="cart_item">
+                                            <td class="cart-product-name">{{item.product.title}}<strong
+                                            class="product-quantity">
+                                            × {{item.other.qte}}</strong></td>
+                                            <td class="cart-product-total"><span class="amount">{{item.other.subTotal | floatformat:0|intspace}} Fcfa</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="cart-subtotal">
+                                            <th>Sous-total</th>
+                                            <td><span class="amount">{{bigTotal | floatformat:0|intspace}} Fcfa</span></td>
+                                        </tr>
+                                        <tr class="order-total">
+                                            <th>Grand Total</th>
+                                            <td id="idBiTotal"><strong><span class="amount">{{bigTotal | floatformat:0|intspace}} Fcfa</span></strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            {% endif %}
+                            <h5 id="idPaymentError" class="text-danger"></h5>
+
+
+                            <div class="payment-method">
+                                <div class="payment-accordion">
+                                    <div id="accordion">
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-1">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
+                                                        Rammassage en magasin.
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input value="Rammassage" class="form-check" id="inputPayment" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                          <p>Pour le ramassage en magasin, les frais de livraison sont gratuits.</p>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-3">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true">
+                                                        Payement par Paypal.
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input value="Paypal" class="form-check" id="inputPayment" type="radio" name="flexRadioDefault" id="flexRadioDefault22">
+                                                        <label class="form-check-label" for="flexRadioDefault22">
+                                                          <p>Une fois les frais de livraison calculés, un lien vous sera envoyé dans votre boite mail pour finaliser votre achat via Paypal.</p>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-4">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true">
+                                                        Payement par Mobile Money.
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseFour" class="collapse" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input value="Mobile Money" class="form-check" id="inputPayment" type="radio" name="flexRadioDefault" id="flexRadioDefault47">
+                                                        <label class="form-check-label" for="flexRadioDefault47">
+                                                          <p>Une fois les frais de livraison calculés, vous recevrez dans votre boite email les numéros pour effectuer le dépot.</p>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-2">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false">
+                                                        Autres
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input value="Autres" class="form-check" id="inputPayment" type="radio" name="flexRadioDefault" id="flexRadioDefault47">
+                                                        <label class="form-check-label" for="flexRadioDefault47">
+                                                          <p>Une fois les frais de livraison calculés, nous reviendrons vers vous par appel ou par mail pour finaliser votre payement.</p>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order-button-payment">
+                                        
+                                        <input id="submitOrder" value="Valider la commande" type="submit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Main Content Area End Here -->
+
+
+{% endblock content %}
+
+{% block jquery %}
+    
+{% endblock jquery %}
+
+

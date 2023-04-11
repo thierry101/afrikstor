@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        {% block title %}       {% endblock title %}
+    </title>
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="Pronia plant store bootstrap 5 template is an awesome website template for any home plant shop.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{setting.fav_icon.url}}" />
+
+    <!-- CSS
+    ============================================ -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" /> -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/Pe-icon-7-stroke.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/ion.rangeSlider.min.css' %}" />
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% csrf_token %}
+    <script>
+        let user = "{{request.user}}"
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    </script>
+
+</head>
+
+<body>
+    <div class="preloader-activate preloader-active open_tm_preloader">
+        <div class="preloader-area-wrap">
+            <div class="spinner d-flex justify-content-center align-items-center h-100">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="main-wrapper">
+        <!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+  background-color: white;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width textarea */
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  resize: none;
+  min-height: 200px;
+}
+
+/* When the textarea gets focus, do something */
+.form-container textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+<button class="open-button" onclick="openForm()">
+    <!-- <span><i class="fa fa-facebook-messenger" aria-hidden="true"></i></span> -->
+    <span title="Nous écrire sur Messenger"><i class="fa fa-envelope" aria-hidden="true" style="font-size:40px; color: aquamarine;"></i></span>
+    <span title="Nous écrire sur Whatsapp"><i class="fa fa-whatsapp" aria-hidden="true" style="font-size:40px; color:green"></i></span>
+    <span><i title="Nous suivre sur Facebook" class="fa fa-facebook" aria-hidden="true" style="font-size:40px; color:blue"></i></span>
+</button>
+
+<div class="chat-popup" id="myForm">
+  <form action="/action_page.php" class="form-container">
+    <!-- <h1>Chat</h1>
+
+    <label for="msg"><b>Message</b></label>
+    <textarea placeholder="Type message.." name="msg" required></textarea> -->
+
+    <a title="Nous écrire sur Messenger" href="{{setting.link_messenger}}" target="_blank" type="submit" class="btn"><span>Messenger</span><span><i class="fa fa-envelope" aria-hidden="true" style="font-size:40px; color: aquamarine;"></i></span></a>
+    <a title="Nous écrire sur Whatsapp" href="{{setting.link_whatsapp}}" target="_blank" type="submit" class="btn"><span>Whatsapp</span><span><i class="fa fa-whatsapp" aria-hidden="true" style="font-size:40px; color:green"></i></span></a>
+    <a title="Nous suivre sur Facebook" href="{{setting.link_facebook}}" target="_blank" type="submit" class="btn"><span>Facebook</span><span><i class="fa fa-facebook" aria-hidden="true" style="font-size:40px; color:blue"></i></span></a>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</body>
+</html>
+
+{% include 'public/header.html' %}
+  {% block css %}
+
+  {% endblock css %}
+    {% block content %}
+
+    
+    {% endblock content %}
+    
+    {% include 'public/footer.html' %}
+    {% include 'public/js.html' %}
+    
+    {% block jquery %}
+
+    {% endblock jquery %}
+    

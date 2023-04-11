@@ -1,0 +1,397 @@
+{% extends 'base.html' %}
+{% block title %}
+    Acceuil | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+{% load spaceNumber %}
+
+{% block content %}
+
+      <!-- Begin Slider Area -->
+      <div class="slider-area">
+
+        <!-- Main Slider -->
+        <div class="swiper-container main-slider swiper-arrow with-bg_white">
+            <div class="swiper-wrapper">
+
+                {% for advert in adverts %}
+                <div class="swiper-slide animation-style-01">
+                    <!-- ici il s'agit du background des lides et il doit etre changer pour afficher le background de l'entreprise -->
+                    <div class="slide-inner style-1 bg-height" data-bg-image="{% static 'images/slider/bg/1-1.jpg' %}">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 order-2 order-lg-1 align-self-center">
+                                    <div class="slide-content text-black">
+                                        <!-- <span class="offer">65% Off</span> -->
+                                        <h2 class="title">{{advert.brand.name}}</h2>
+                                        {% if advert.brand.description %}
+                                        <p class="short-desc">{{advert.brand.description}}</p>
+                                        {% endif %}
+                                        <div class="btn-wrap">
+                                            <a class="btn btn-custom-size xl-size btn-pronia-primary" href="{% url 'home:brandProds' advert.brand.name advert.brand.id %}">Visiter</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-0 order-1 order-lg-2">
+                                    <div class="inner-img">
+                                        <div class="scene fill">
+                                            <div class="expand-width" data-depth="0.2">
+                                                <img width="524px" height="617px" src="{{advert.img.url}}" alt="Inner Image">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination d-md-none"></div>
+
+            <!-- Add Arrows -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+
+    </div>
+    <!-- Slider Area End Here -->
+
+    <!-- Begin Shipping Area -->
+    <div class="shipping-area section-space-top-100">
+        <div class="container">
+            <div class="shipping-bg">
+                <div class="row shipping-wrap">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="shipping-item">
+                            <div class="shipping-img">
+                                <img src="{% static 'images/shipping/icon/car.png'%}" alt="Shipping Icon">
+                            </div>
+                            <div class="shipping-content">
+                                <h2 class="title">Livraison rapide</h2>
+                                <p class="short-desc mb-0">{{aboutUs.freeDelivry}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
+                        <div class="shipping-item">
+                            <div class="shipping-img">
+                                <img src="{% static 'images/shipping/icon/card.png'%}" alt="Shipping Icon">
+                            </div>
+                            <div class="shipping-content">
+                                <h2 class="title">Payement sécurisé</h2>
+                                <p class="short-desc mb-0">Payer en toute sécurité sur notre site</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
+                        <div class="shipping-item">
+                            <div class="shipping-img">
+                                <img src="{% static 'images/shipping/icon/service.png'%}" alt="Shipping Icon">
+                            </div>
+                            <div class="shipping-content">
+                                <h2 class="title">Meilleur service</h2>
+                                <p class="short-desc mb-0">Disponible 24h/24, 7j/7</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shipping Area End Here -->
+
+    <!-- Begin Product Area -->
+    <div class="product-area section-space-top-100">
+        <div class="container">
+            <div class="section-title-wrap">
+                <h2 class="section-title mb-0">Nos articles</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav product-tab-nav tab-style-1" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="active" id="featured-tab" data-bs-toggle="tab" href="#featured" role="tab" aria-controls="featured" aria-selected="true">
+                                En vedette
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a id="latest-tab" data-bs-toggle="tab" href="#latest" role="tab" aria-controls="latest" aria-selected="false">
+                                Nouveautés
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="featured" role="tabpanel" aria-labelledby="featured-tab">
+                            <div class="product-item-wrap row">
+                                {% if products %}
+                                {% for item in products %}
+                                <div class="col-xl-3 col-md-4 col-6">
+                                    <div class="product-item">
+                                        <div class="product-img">
+                                            <a href="{% url 'home:detailProd' item.id %}">
+                                                <img width="270px" height="200px" class="primary-img" src="{{item.mainImg.url}}" alt="Product Images">
+                                                <img width="270px" height="200px" class="secondary-img" src="{{item.secondImg.url}}" alt="Product Images">
+                                            </a>
+                                            <div class="product-add-action">
+                                                <ul>
+                                                    {% if user.is_authenticated %}
+                                                    <li>
+                                                        <a href="wishlist.html" id="{{item.id}}" class="addWishList" data-tippy="Ajouter à la liste de souhait" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <i id="{{item.id}}" class="pe-7s-like"></i>
+                                                        </a>
+                                                    </li>
+                                                   {% endif %}
+                                                    <li>
+                                                        <a class="addCartFeatured" id="{{item.id}}" href="cart.html" data-tippy="Ajouter au panier" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <i id="{{item.id}}" class="pe-7s-cart"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <a class="product-name" href="{% url 'home:detailProd' item.id %}">{{item.title}}</a>
+                                            <div class="price-box pb-1">
+                                                <span class="new-price">{{item.price | floatformat:0 | intspace}} Fcfa</span>
+                                            </div>
+                                            <div class="rating-box">
+                                                <ul>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="latest" role="tabpanel" aria-labelledby="latest-tab">
+                            <div class="product-item-wrap row">
+                                {% if products %}
+                                {% for product in newProducts %}
+                                <div class="col-xl-3 col-md-4 col-6">
+                                    <div class="product-item">
+                                        <div class="product-img">
+                                            <a href="{% url 'home:detailProd' product.id %}">
+                                                <img width="270px" height="300px" class="primary-img" src="{{product.mainImg.url}}" alt="Product Images">
+                                                <img width="270px" height="300px" class="secondary-img" src="{{url}}{{product.secondImg}}" alt="Product Images">
+                                            </a>
+                                            <div class="product-add-action">
+                                                <ul>
+                                                    {% if user.is_authenticated %}
+                                                    <li class="addWishListNew" id="{{product.id}}">
+                                                        <a id="{{product.id}}" href="wishlist.html" data-tippy="Ajouter à la liste de souhait" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <i id="{{product.id}}" class="pe-7s-like"></i>
+                                                        </a>
+                                                    </li>
+                                                    {% endif %}
+                                                    <li>
+                                                        <a href="cart.html" class="addCartNewProd" id="{{product.id}}" data-tippy="Ajouter au panier" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <i id="{{product.id}}" class="pe-7s-cart"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <a class="product-name" href="{% url 'home:detailProd' product.id %}">{{product.title}}</a>
+                                            <div class="price-box pb-1">
+                                                <span class="new-price">{{product.price | floatformat:0 | intspace}} Fcfa</span>
+                                            </div>
+                                            <div class="rating-box">
+                                                <ul>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Product Area End Here -->
+
+    <!-- Begin Banner Area -->
+    <div class="banner-area section-space-top-90">
+        <div class="container">
+            <div class="row g-min-30 g-4">
+                {% for adver in adverts %}
+                {% if forloop.first %}
+                <div class="col-lg-8">
+                    <div class="banner-item img-hover-effect">
+                        <div class="banner-img">
+                            <img width="770px" height="300px" src="{{adver.img.url}}" alt="Banner Image">
+                        </div>
+                        <div class="banner-content text-position-left">
+                            <h3 class="title">{{adver.brand.name}}</h3>
+                            <div class="button-wrap">
+                                <a class="btn btn-custom-size btn-pronia-primary" href="{% url 'home:brandProds' adver.brand.name adver.brand.id %}">
+                                    Visiter</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if forloop.last %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="banner-item img-hover-effect">
+                        <div class="banner-img">
+                            <img width="370px" height="300px" src="{{adver.img.url}}" alt="Banner Image">
+                        </div>
+                        <div class="banner-content text-position-center">
+                            <h3 class="title">{{adver.brand.name}}</h3>
+                            <div class="button-wrap">
+                                <a class="btn btn-custom-size lg-size btn-pronia-primary" href="{% url 'home:brandProds' adver.brand.name adver.brand.id %}">
+                                    Visiter</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Banner Area End Here -->
+
+
+    <!-- Begin Testimonial Area -->
+    <div class="testimonial-area section-space-top-90 section-space-bottom-95">
+        <div class="container-fluid">
+            <div class="testimonial-bg" data-bg-image="{% static 'images/testimonial/bg/1-1-1820x443.jpg' %}">
+                <div class="section-title-wrap">
+                    <h2 class="section-title">Ce que disent les clients</h2>
+                    <!-- <p class="section-desc mb-0">Contrary to popular belief, Lorem Ipsum is not simply random
+                        text. It has roots in a piece of classical Latin literature
+                    </p> -->
+                </div>
+            </div>
+            <div class="container custom-space">
+                <div class="swiper-container testimonial-slider with-bg">
+                    <div class="swiper-wrapper">
+                        {% for comment in comments %}
+                        <div class="swiper-slide testimonial-item">
+                            <div class="user-info mb-3">
+                                <div class="user-shape-wrap">
+                                    <div class="user-img">
+                                        <img src="{% static 'images/testimonial/user/1.png'%}" alt="User Image">
+                                    </div>
+                                </div>
+                                <div class="user-content text-charcoal">
+                                    <h4 class="user-name mb-1">{{comment.user.last_name}} {{comment.user.first_name}}</h4>
+                                    <span class="user-occupation">Client</span>
+                                </div>
+                            </div>
+                            <p class="user-comment mb-6">{{comment.message}}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination without-absolute"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial Area End Here -->
+
+    <!-- Begin Brand Area -->
+    <div class="brand-area section-space-bottom-100">
+        <div class="container">
+            <h2 class="section-title text-center">Nos marques</h2>
+            <div class="brand-bg" data-bg-image="{% static 'images/brand/bg/1-1170x300.jpg' %}">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="swiper-container brand-slider">
+                            <div class="swiper-wrapper">
+                                {% if brands %}
+                                {% for brand in brands %}
+                                <div class="swiper-slide">
+                                    <h6>{{brand.name}}</h6>
+                                    <a id="{{brand.id}}" class="brand-item urlBrand" href="javascript:void(0)">
+                                        <img id="{{brand.id}}"  width="84px" height="107px" src="{{brand.image.url}}" alt="Brand Image">
+                                    </a>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+ 
+    <!-- Begin Blog Area -->
+    <div class="blog-area section-space-bottom-100">
+        <div class="container">
+            <div class="section-title-wrap">
+                <h2 class="section-title mb-7">Blogs récents</h2>
+                <!-- <p class="section-desc">Contrary to popular belief, Lorem Ipsum is not simply random text. It has
+                    roots in a piece of classical Latin literature -->
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="swiper-container blog-slider">
+                        <div class="swiper-wrapper">
+                            {% for blog in blogs %}
+                            <div class="swiper-slide">
+                                <div class="blog-item">
+                                    <div class="blog-content">
+                                        <div class="blog-meta">
+                                            <ul>
+                                                <li class="author">
+                                                    <a href="{% url 'blog:detailBlog' blog.id %}">Ecrit par: {{blog.author}}</a>
+                                                </li>
+                                                <li class="date">{{blog.updated|date:"d, M, Y"}}</li>
+                                            </ul>
+                                        </div>
+                                        <h2 class="title">
+                                            <a href="{% url 'blog:detailBlog' blog.id %}">{{blog.title}}</a>
+                                        </h2>
+                                        <p class="short-desc mb-7">{{blog.blogMsg|truncatewords:25}}</p>
+                                    </div>
+                                    <div class="blog-img img-hover-effect">
+                                        <a href="{% url 'blog:detailBlog' blog.id %}">
+                                            <img width="310px" height="220px" class="img-full" src="{{blog.image.url}}" alt="Blog Image">
+                                        </a>
+                                        <div class="inner-btn-wrap">
+                                            <a class="inner-btn" href="{% url 'blog:detailBlog' blog.id %}">
+                                                <i class="pe-7s-link"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog Area End Here -->
+
+{% endblock content %}

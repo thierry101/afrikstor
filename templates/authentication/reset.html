@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}
+    detail {{product.title}} | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+
+{% block content %}
+
+     <!-- Begin Main Content Area -->
+    <main class="main-content">
+        <div class="login-register-area section-space-y-axis-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 pt-5 pt-lg-0 text-center">
+                        <form action="#">
+                            <div class="login-form">
+                                <h4 class="login-title">Créer nouveau mot de passe</h4>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label><strong>Mot de Passe</strong></label>
+                                        <input class="form-control" id="changePassword" type="password" placeholder="Mot de passe">
+                                        <span class="text-danger" id="changePasswordError"></span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label><strong>Confirmer Mot de Passe</strong></label>
+                                        <input class="form-control" id="changeConfirm" type="password" placeholder="Confirmer mot de passe">
+                                        <span class="text-danger" id="changeConfirmError"></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <button id="resetPasswordId10" class="btn btn-custom-size lg-size btn-pronia-primary">Créer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Main Content Area End Here -->
+
+
+
+
+{% endblock content %}

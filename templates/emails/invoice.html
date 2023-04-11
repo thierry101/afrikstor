@@ -1,0 +1,242 @@
+{% load i18n %}
+{% load spaceNumber %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabcart</title>
+    <style>
+        body{
+            background-color: #F6F6F6; 
+            margin: 0;
+            padding: 0;
+        }
+        h1,h2,h3,h4,h5,h6{
+            margin: 0;
+            padding: 0;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+            width: 80%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .brand-section{
+           background-color: #abd373;
+           padding: 10px 40px;
+        }
+        .logo{
+            width: 50%;
+        }
+
+        .row{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .col-6{
+            width: 50%;
+            flex: 0 0 auto;
+        }
+        .text-white{
+            color: #fff;
+        }
+        .company-details{
+            float: right;
+            text-align: right;
+        }
+        .body-section{
+            padding: 16px;
+            border: 1px solid #525252;
+        }
+        .footer-section{
+            background-color: aquamarine;
+            text-align: center;
+        }
+        .heading{
+            font-size: 20px;
+            margin-bottom: 08px;
+        }
+        .sub-heading{
+            color: #262626;
+            margin-bottom: 05px;
+        }
+        table{
+            background-color: #fff;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table thead tr{
+            border: 1px solid #111;
+            background-color: #f2f2f2;
+        }
+        table td {
+            vertical-align: middle !important;
+            text-align: center;
+        }
+        table th, table td {
+            padding-top: 08px;
+            padding-bottom: 08px;
+        }
+        .table-bordered{
+            box-shadow: 0px 0px 5px 0.5px gray;
+        }
+        .table-bordered td, .table-bordered th {
+            border: 1px solid #dee2e6;
+        }
+        .text-right{
+            text-align: end;
+        }
+        .w-20{
+            width: 20%;
+        }
+        .float-right{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="brand-section">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="text-white"><img width="40%" height="75px" src="{{path}}{{logo.url}}" alt=""></h1>
+                </div>
+                <div class="col-6">
+                    <div class="company-details">
+                        <p class="text-white">{{setting.nameSite}}</p>
+                        <p class="text-white">Email: {{setting.email}}</p>
+                        <p class="text-white">Localisation: {{setting.localisation}}</p>
+                        <p class="text-white">Téléphone: {{setting.phone}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-section">
+            <div class="row">
+                <div class="col-6">
+                    <h2 class="heading">Facture No.: {{order.nberInvoice}}</h2>
+                    <!-- <p class="sub-heading"><strong>Tracking No.</strong> fabcart2025 </p> -->
+                    {% language 'fr' %}
+                    <p class="sub-heading"><strong>Date de la commande</strong>: {% now "j F Y" %} </p>
+                    {% endlanguage %}
+                    <!-- <p class="sub-heading"><strong>Email Address</strong>: customer@gfmail.com </p> -->
+                </div>
+                <div class="col-6">
+                    {% if order.user %}
+                    <p class="sub-heading"><strong>Nom complet</strong> : {{order.user.last_name}} {{order.user.first_name}}</p>
+                    <p class="sub-heading"><strong>Adresse</strong>: {{order.address.country}}, {{order.address.city}} ({{order.address.address}}) </p>
+                    <p class="sub-heading"><strong>Téléphone </strong>: {{order.address.phone}} </p>
+                    {% else %}
+                    {% for info in infoUser %}
+                    <p class="sub-heading"><strong>Nom complet</strong> :{{info.name}} {{info.surname}}</p>
+                    <p class="sub-heading"><strong>Adresse</strong>: {{info.country}}, {{info.city}} ({{info.address}}) </p>
+                    <p class="sub-heading"><strong>Téléphone </strong>: {{info.phone}} </p>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- <p class="sub-heading">City,State,Pincode:  </p> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="body-section">
+            <h3 class="heading">Articles commandés</h3>
+            <br>
+            <table class="table-bordered">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Titre</th>
+                        <th class="w-20">Prix unitaire</th>
+                        <th class="w-20">Quantité</th>
+                        <th class="w-20">Sous-Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td><img src="{{path}}{{item.path}}" width="50px" height="50px" alt=""></td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.price | floatformat:0 | intspace}} Fcfa</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.total | floatformat:0 | intspace}} Fcfa</td>
+                    </tr>
+                   {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <h3 class="heading">Sous-Total: {{order.newTotal| floatformat:0 | intspace}} Fcfa</h3>
+            {% if order.reduction %}
+            <h3 class="heading">Réduction: {{order.reduction}}</h3>
+            {% endif %}
+            {% if order.priceDelivery %}
+            <h3 class="heading">Montant livraison: {{order.priceDelivery| floatformat:0 | intspace}} Fcfa</h3>
+            {% endif %}
+            <h3 class="heading">Montant Total: {{order.newTotal|add:order.priceDelivery | floatformat:0 | intspace}} Fcfa</h3>
+            <input type="hidden" id="idAmout" value="{{order.newTotal|add:order.priceDelivery}}">
+            <h4>{{payment}}</h4>
+            {% if method == 'Paypal' %}
+            <br>
+            <br>
+                <div id="paypal-button-container"></div>
+            {% endif %}
+        </div>
+        <div class="body-section footer-section">
+            <p>&copy; Copyright 
+                <script type="text/javascript">document.write( new Date().getFullYear() );</script>
+                - {{setting.nameSite}}. Tous droits reservés. 
+                <!-- <a href="https://www.fundaofwebit.com/" class="float-right">www.fundaofwebit.com</a> -->
+            </p>
+        </div>      
+    </div>      
+
+</body>
+{% if method == 'Paypal' %}
+<!-- Af0ftWFlo6AcipNZYtihLpoR0Z_by0BBy4KWB_VjvkwvVt3sjRO-hzOflyPV5ih6mcf8oU4Rfqps9Hto -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AdJn_XByxXYmvdt7H89Yf6903q_XDZbvzrXZ2bZ06NHmZhYc8KQ0WtiLRoRs6j4cmS7Juyc94jqFll9B&currency=EUR"></script>
+    <script>
+        // function to get 2 number after the . in decimal number
+        truncateDecimals = function (number, digits) {
+            var multiplier = Math.pow(10, digits),
+                adjustedNum = number * multiplier,
+                truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
+
+            return truncatedNum / multiplier;
+        };
+
+        paypal.Buttons({
+            // Sets up the transaction when a payment button is clicked
+            createOrder: (data, actions) => {
+            let mnt = document.getElementById('idAmout').value
+            let TrueAmt = parseFloat(mnt)/650
+            return actions.order.create({
+            purchase_units: [{
+                amount: {
+                value: truncateDecimals(TrueAmt, 2) // Can also reference a variable or function
+                }
+            }]
+            });
+        },
+        // Finalize the transaction after payer approval
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(function(orderData) {
+            // Successful capture! For dev/demo purposes:
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            const transaction = orderData.purchase_units[0].payments.captures[0];
+            alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+            // When ready to go live, remove the alert and show a success message within this page. For example:
+            // const element = document.getElementById('paypal-button-container');
+            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+            // Or go to another URL:  actions.redirect('thank_you.html');
+            });
+        }
+        }).render('#paypal-button-container');
+    </script>
+{% endif %}
+</html>

@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% block title %}
+    boutique | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+{% load spaceNumber %}
+{% block css %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+{% endblock css %}
+
+{% block content %}
+
+
+     <!-- Begin Main Content Area -->
+    <main class="main-content">
+       
+        <div class="shop-area section-space-y-axis-100">
+            <div class="container">
+                <div class="row">
+                    <form method="GET" action="{% url 'shop:shopIndex' %}" id="widgets-searchbox">
+                        <div class="input-group mb-3">
+                            <input id="search" name="search" type="text" class="form-control" placeholder="Que recherchez-vous ?" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-secondary" type="submit" id="button-addon2"><span><i class="fa fa-search"></i></span> Rechercher</button>
+                        </div>
+                    </form>
+                    <div class="col-xl-3 col-lg-4 order-2 order-lg-1 pt-5 pt-lg-0">
+                        <div class="sidebar-area">
+                            <div class="widgets-">
+                            </div>
+                            <div class="widgets-area">
+                                <div class="widgets-item pt-0">
+                                    <h2 class="widgets-title mb-4">Catégories</h2>
+                                    <ul class="widgets-category">
+                                        <li>
+                                            <a href="{% url 'shop:shopIndex' %}" id="0">
+                                                <i class="fa fa-chevron-right"></i>
+                                                Tout <span>({{productss|length}})</span>
+                                            </a>
+                                        </li>
+                                        {% for category in categories %}
+                                        {% if category.registerProduct_count %}
+                                        <li>
+                                            <a class="urlCat" href="javascript:void(0)" id="{{category.id}}">
+                                                <i class="fa fa-chevron-right"></i>
+                                                {{category.name}} <span>({{category.registerProduct_count}})</span>
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <!-- <div class="widgets-item">
+                                    <h2 class="widgets-title mb-4">Couleurs</h2>
+                                    <ul class="widgets-category widgets-color">
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-chevron-right"></i>
+                                                All <span>(65)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-chevron-right"></i>
+                                                Gold <span>(12)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-chevron-right"></i>
+
+                                                Green <span>(22)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-chevron-right"></i>
+                                                white <span>(13)</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-chevron-right"></i>
+                                                Black <span>(10)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div> -->
+                                <div class="widgets-item widgets-filter">
+                                    <h2 class="widgets-title mb-4">Filtrer par prix</h2>
+                                    <div class="price-filter">
+                                        <input type="text" id="price-list" onchange="location = finalUrl2(); " class="pronia-range-slider" name="pronia-range-slider" value="" data-type="double" data-min="0" data-from="0" data-to="2500000" data-max="2500000" data-grid="true" />
+                                    </div>
+                                </div>
+                                <!-- <div class="widgets-item">
+                                    <h2 class="widgets-title mb-4">Populer Tags</h2>
+                                    <ul class="widgets-tag">
+                                        <li>
+                                            <a href="#">Fashion</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Organic</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Old Fashion</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Men</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Fashion</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Dress</a>
+                                        </li>
+                                    </ul>
+                                </div> -->
+                            </div>
+                            <div class="banner-item widgets-banner img-hover-effect">
+                                <div class="banner-img">
+                                    <img src="{% static 'images/sidebar/banner/1-270x300.jpg' %}" alt="Banner Image">
+                                </div>
+                                <div class="banner-content text-position-center">
+                                    <span class="collection">New Collection</span>
+                                    <h3 class="title">Plant Port</h3>
+                                    <div class="button-wrap">
+                                        <a class="btn btn-custom-size sm-size btn-pronia-primary" href="#">Shop
+                                            Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-8 order-1 order-lg-2">
+                        <div class="product-topbar">
+                            <ul>
+                                <li class="page-count">
+                                    <span>{{products.count}}</span> articles trouvés
+                                </li>
+                              
+                                <li class="short">
+                                    <select class="nice-select" id="sort-list" onchange="location = finalUrl();">
+                                        <option selected disabled>Trier par : </option>
+                                        <option value="-updated">Nouveauté</option>
+                                        <option value="-price"> Prix haut</option>
+                                        <option value="price">Prix bas</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                        {% if products %}
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active bigDivNoApi" id="grid-view" role="tabpanel" aria-labelledby="grid-view-tab">
+                                <div class="product-grid-view row g-y-20">
+                                    {% for product in products %}
+                                    <div class="col-md-4 col-6">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="{% url 'home:detailProd' product.id %}">
+                                                    <img width="270px" height="200px" class="primary-img" src="{{product.mainImg.url}}" alt="Product Images">
+                                                    <img width="270px" height="200px" class="secondary-img" src="{{product.secondImg.url}}" alt="Product Images second">
+                                                </a>
+                                                <div class="product-add-action">
+                                                    <ul>
+                                                        {% if user.is_authenticated %}
+                                                        <li class="addWishListShop" id="{{product.id}}">
+                                                            <a href="wishlist.html" id="{{product.id}}" data-tippy="Ajouter à la liste de souhait" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i id="{{product.id}}" class="pe-7s-like"></i>
+                                                            </a>
+                                                        </li>
+                                                        {% endif %}
+                                                        <li>
+                                                            <a id="{{product.id}}" href="cart.html" data-tippy="Ajouter au panier" class="addCartShop" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i id="{{product.id}}" class="pe-7s-cart"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <a class="product-name" href="{% url 'home:detailProd' product.id %}">{{product.title}}</a>
+                                                <div class="price-box pb-1">
+                                                    <span class="new-price">{{product.price | floatformat:0 | intspace}} Fcfa</span>
+                                                </div>
+                                                <div class="rating-box">
+                                                    <ul>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade show active bigDivApi" id="grid-view" role="tabpanel" aria-labelledby="grid-view-tab">
+                                <div class="product-grid-view row g-y-20 bodyApi">
+                                    
+                                </div>
+                            </div>
+                          
+                        </div>
+                        <div class="pagination-area">
+                            {% if is_paginated %}
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link active" href="?page={{page_obj.previous_page_number}}" aria-label="Suivant">&laquo;</a>
+                                    </li>
+                                    {% endif %}
+                                    {% for i in paginator.page_range %}
+                                    {% if i == page_obj.number %}
+                                    <li class="page-item {% if i == page_obj.number %} active {% endif %}">
+                                        <a class="page-link" href="?page={{i}}" span class="visually-hidden">{{i}}</span></a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item {% if i == current_page %} active {% endif %}">
+                                        <a class="page-link" href="?page={{i}}">{{i}}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <!-- <li class="page-item">{{products.number}} sur {{products.paginator.num_pages}}</li> -->
+                                    {% if products.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link {% if page_num == current_page  %} active {% endif %}" href="?page={{page_obj.next_page_number}}" aria-label="Suivant">&raquo;</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{page_obj.paginator.num_pages}}" aria-label="Derniere page">&raquo; &raquo;</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="tab-content">
+                            <h4 class="text-center">Aucun resultat pour votre recherche</h4>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Main Content Area End Here -->
+
+    
+    {% block jquery %}
+    <script>
+        // for getting the sorting status to be displayed in sorting dropdown
+        function get(name){
+            console.log("the name is", name)
+            if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search)){ //location.search give query slint part
+                return decodeURIComponent(name[1])
+            }
+            if (get('ordering')){
+                document.getElementById('placeholder').innerHTML = 'sort: ' + document.getElementById(get('ordering')).innerHTML;
+            }
+
+            if (get('price')){
+                document.getElementById('price-placeholder').innerHTML = 'price: ' + document.getElementById('pr'+get('price')).innerHTML;
+            }
+        }
+        // to getting url after applying ordering
+        function finalUrl(){
+            var url = new URL(window.location.href);
+            var search_params = url.searchParams;
+            search_params.set('ordering', document.getElementById('sort-list').value);
+            url.search = search_params.toString();
+            var new_url = url.toString();
+            return new_url
+        }
+
+        // for getting url after applying price filtering
+        function finalUrl2(){
+            var url = new URL(window.location.href);
+            var search_params = url.searchParams;
+            search_params.set('price', document.getElementById('price-list').value);
+            url.search = search_params.toString();
+            var new_url = url.toString();
+            return new_url
+        }
+
+        // function finalUrl3(e){
+        //     console.log(e)
+        //     console.log("the id to print is", $('a[id^="catId--"]').val())
+        //     var url = new URL(window.location.href);
+        //     var search_params = url.searchParams;
+        //     // search_params.set('category', )
+
+        // }
+    </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function (){
+            $('#search').autocomplete({
+                source: "/api-suggestion/",
+                minLength:2,
+                // select: function(event, ui){
+                //     $('#search').val(ui.item.value);
+                //     $('#userId').val(ui.item.id);
+                //     console.log("the source are", ui)
+                // }
+            })
+            // .data("ui-autocomplete")._renderItem = function(ul, item){
+            //     return $("<li class='ui-autocomplete-row'></li>")
+            //     .data("item.autocomplete", item)
+            //     .append(item.label)
+            //     .appendTo(ul);
+            // }
+        });
+    </script>
+    {% endblock jquery %}
+{% endblock content %}

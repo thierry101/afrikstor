@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% block title %}
+    view cart | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+{% load spaceNumber %}
+
+{% block content %}
+
+         <!-- Begin Main Content Area -->
+        <main class="main-content">
+            <div class="breadcrumb-area breadcrumb-height" data-bg-image="{% static 'images/breadcrumb/bg/1-1-1919x388.jpg' %}">
+                <div class="container h-100">
+                    <div class="row h-100">
+                        <div class="col-lg-12">
+                            <div class="breadcrumb-item">
+                                <h2 class="breadcrumb-heading">Mon panier</h2>
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'home:homeIndex' %}">Acceuil</a>
+                                    </li>
+                                    <li>Mon panier</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-area section-space-y-axis-100">
+                <div class="container">
+                    <div class="row">
+                        {% if request.user.is_authenticated %}
+                        <div class="col-12" id="idCartTemplate">
+                            {% if allItems %}
+                            <form action="javascript:void(0)">
+                                <div class="">
+                                    <table class="table" id="idTableCart">
+                                        <thead class="table-dark">
+                                          <tr>
+                                            <th class="col-md-1" scope="col">#</th>
+                                            <th class="col-md-2" scope="col">Photo</th>
+                                            <th class="col-md-2" scope="col">Article</th>
+                                            <th class="col-md-2" scope="col">Caractéristiques</th>
+                                            <th class="col-md-1" scope="col">Quantité</th>
+                                            <th class="col-md-1.5" scope="col">Prix Unitaire</th>
+                                            <th class="col-md-1.5" scope="col">Total</th>
+                                            <th class="col-md-1" scope="col">Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in allItems %}
+                                            <input type="hidden" id="{{item.id}}">
+                                            <input type="hidden" value="{{idOrder}}" id="idForOrder">
+                                            <tr id="idDel--{{item.product.id}}">
+                                                <th class="indexCount" scope="row">{{forloop.counter}}</th>
+                                                <td>
+                                                    <img width="50px", height="60px" src="{{item.product.mainImg.url}}" alt="" srcset="">
+                                                </td>
+                                                <td>{{item.product.title}}</td>
+                                                <td>
+                                                    {% if item.size %}
+                                                        <strong>Taille </strong> {{item.size}}
+                                                    {% endif %} <br>
+                                                    {% if item.color %}
+                                                        <strong>Couleur </strong> {{item.color}} 
+                                                    {% endif %}
+                                                </td>
+                                                <td class="quantity">
+                                                    <div class="cart-plus-minus updateCart" id="{{item.id}}">
+                                                        <input class="cart-plus-minus-box" value="{{item.quantity}}" type="text">
+                                                        <div class="dec qtybutton">
+                                                            <i class="fa fa-minus"></i>
+                                                        </div>
+                                                        <div class="inc qtybutton">
+                                                            <i class="fa fa-plus"></i>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{{item.price | floatformat:0|intspace}} Fcfa</td>
+                                                <td id="idSubTotal--{{item.id}}">{{item.total | floatformat:0|intspace}} Fcfa</td>
+                                                <td>
+                                                    <button title="Retirer" type="button" class="btn btn-danger deleteId" id="{{item.id}}">
+                                                        <i class="pe-7s-close" id="{{item.id}}" data-tippy="Retirer" data-tippy-inertia="true"
+                                                        data-tippy-animation="shift-away" data-tippy-delay="50"
+                                                        data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            <tr>
+                                            <th colspan="3" scope="row"><strong>GRAND TOTAL</strong></th>
+                                            <td id="idForBigTotal" colspan="5"><strong>{{bigTotal|floatformat:0|intspace}} Fcfa</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="coupon-all">
+                                            <!-- <div class="coupon">
+                                                <h6>Avez-vous un coupon de réduction ?</h6>
+                                                <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Entrez le code du coupon" type="text">
+                                                <input id="applyCoupon" class="button mt-xxs-30" name="apply_coupon" value="Valider" type="submit">
+                                            </div> -->
+                                            <div class="coupon2">
+                                                <input class="button updateBucket" name="update_cart" value="Mettre à jour mon panier" type="submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 ml-auto">
+                                        <div class="cart-page-total">
+                                            <h2>Cart totals</h2>
+                                            <ul>
+                                                <li>Sous total<span>{{bigTotal|floatformat:0|intspace}} Fcfa</span></li>
+                                                <li>Total réduction<span id="idTotalReduction">{{reduction|floatformat:0|intspace}} Fcfa</span></li>
+                                                <li>Grand Total <span id="idBiTotal">{{newBigTotal|floatformat:0|intspace}} Fcfa</span></li>
+                                            </ul>
+                                            <a href="{% url 'handleCart:checkout' %}">Aller à la caisse</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            {% else %}
+                            <h1 class="text-center">Votre panier est vide</h1>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="col-12" id="idCartTemplateAnonymous">
+                            {% if allItems %}
+                            <form action="javascript:void(0)">
+                                <div class="">
+                                    <table class="table" id="idTableCartAnonymous">
+                                        <thead class="table-dark">
+                                          <tr>
+                                            <th class="col-md-1" scope="col">#</th>
+                                            <th class="col-md-2" scope="col">Photo</th>
+                                            <th class="col-md-2" scope="col">Article</th>
+                                            <th class="col-md-2" scope="col">Caractéristiques</th>
+                                            <th class="col-md-1" scope="col">Quantité</th>
+                                            <th class="col-md-1.5" scope="col">Prix Unitaire</th>
+                                            <th class="col-md-1.5" scope="col">Total</th>
+                                            <th class="col-md-1" scope="col">Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in allItems %}
+                                            <!-- <input type="hidden" id="{{item.product.id}}">
+                                            <input type="hidden" value="{{idOrder}}" id="idForOrder"> -->
+                                            <tr id="idDel--{{item.product.id}}">
+                                            <th class="indexCountAnonymous" scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <img width="50px", height="60px" src="{{item.product.mainImg.url}}" alt="" srcset="">
+                                            </td>
+                                            <td>{{item.product.title}}</td>
+                                            <td>
+                                                {% if item.other.size %}
+                                                    <strong>Taille </strong> {{item.other.size}}
+                                                {% endif %} <br>
+                                                {% if item.other.color %}
+                                                    <strong>Couleur </strong> {{item.other.color}} 
+                                                {% endif %}
+                                            </td>
+                                            <td class="quantity">
+                                                <div class="cart-plus-minus updateCart" id="{{item.product.id}}">
+                                                    <input class="cart-plus-minus-box" value="{{item.other.qte}}" type="text">
+                                                    <div class="dec qtybutton">
+                                                        <i class="fa fa-minus"></i>
+                                                    </div>
+                                                    <div class="inc qtybutton">
+                                                        <i class="fa fa-plus"></i>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{item.other.price | floatformat:0|intspace}} Fcfa</td>
+                                            <td>{{item.other.subTotal | floatformat:0|intspace}} Fcfa</td>
+                                            <td>
+                                                <button title="Retirer" type="button" class="btn btn-danger deleteIdAnonymous" id="{{item.product.id}}">
+                                                    <i class="pe-7s-close" id="{{item.product.id}}" data-tippy="Retirer" data-tippy-inertia="true"
+                                                    data-tippy-animation="shift-away" data-tippy-delay="50"
+                                                    data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
+                                                </button>
+                                            </td>
+                                            </tr>
+                                            {% endfor %}
+                                            <tr>
+                                            <th colspan="3" scope="row"><strong>SOUS TOTAL</strong></th>
+                                            <td colspan="5" id="idForBigtotalT"><strong>{{bigTotal|floatformat:0|intspace}} Fcfa</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="coupon-all">
+                                            <div class="coupon2">
+                                                <input class="button updateBucket" name="update_cart" value="Mettre à jour mon panier" type="submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 ml-auto">
+                                        <div class="cart-page-total">
+                                            <h2>Total panier</h2>
+                                            <ul>
+                                                <li>Sous-total <span>{{bigTotal|floatformat:0|intspace}} Fcfa</span></li>
+                                                <li>Total <span>{{bigTotal|floatformat:0|intspace}} Fcfa</span></li>
+                                            </ul>
+                                            <a href="{% url 'handleCart:checkout' %}">Aller à la caisse</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            {% else %}
+                                <h1 class="text-center">Votre panier est vide</h1>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Main Content Area End Here -->
+
+
+{% endblock content %}

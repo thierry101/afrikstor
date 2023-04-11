@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}
+    view cart | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+{% load spaceNumber %}
+
+{% block content %}
+
+    <!-- Begin Main Content Area -->
+    <main class="main-content">
+        <div class="breadcrumb-area breadcrumb-height" data-bg-image="/static/images/breadcrumb/bg/1-1-1919x388.jpg">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-item">
+                            <h2 class="breadcrumb-heading">Foire aux questions</h2>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'home:homeIndex' %}">Acceuil</a>
+                                </li>
+                                <li>FAQ</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="faq-area section-space-y-axis-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="frequently-area">
+                            <!-- <h2 class="heading mb-0">General Question</h2> -->
+                            <div class="row">
+                                <div class="col-md-12 mt-4">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="frequently-item">
+                                                <ul>
+                                                    {% for faq in faqs %}
+                                                    <li class="has-sub">
+                                                        <a href="javascript:void(0)">{{faq.question}}
+                                                            <i class="pe-7s-angle-down"></i>
+                                                        </a>
+                                                        <ul class="frequently-body">
+                                                            <li>
+                                                                {{faq.answer}}
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Main Content Area End Here -->
+
+{% endblock content %}

@@ -1,0 +1,149 @@
+{% load static %}
+
+<!-- Begin Footer Area -->
+<div class="footer-area" data-bg-image="{% static 'images/footer/bg/1-1920x465.jpg' %}">
+    <div class="footer-top section-space-top-100 pb-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer-widget-item">
+                        <div class="footer-widget-logo">
+                            <a href="/">
+                                <img width="100%" height="75px" src="{{setting.logo.url}}" alt="Logo">
+                            </a>
+                        </div>
+                        <p class="footer-widget-desc">{{setting.ourSlogan}}</p>
+                        <div class="social-link with-border">
+                            <ul>
+                                <li>
+                                    <a target="_blank" href="{{setting.link_facebook}}" data-tippy="Nous suivre sur Facebook" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                        <i class="fa fa-facebook"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a target="_blank" href="{{setting.link_instagram}}" data-tippy="Nous suivre sur Instagram" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a target="_blank" href="{{setting.link_whatsapp_grpe}}" data-tippy="rejoindre notre communauté Whatsapp" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                        <i class="fa fa-whatsapp"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 pt-40">
+                    <div class="footer-widget-item">
+                        <h3 class="footer-widget-title">Liens utiles</h3>
+                        <ul class="footer-widget-list-item">
+                            <li>
+                                <a href="{% url 'contactAndAbout:aboutIndex'%}">A propos de nous</a>
+                            </li>
+                            <!-- <li>
+                                <a href="#">How to shop</a>
+                            </li> -->
+                            <li>
+                                <a href="{% url 'blog:indexBlog' %}">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'contactAndAbout:contactIndex' %}">Nous contacter</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 pt-40">
+                    <div class="footer-widget-item">
+                        <h3 class="footer-widget-title">Mon compte</h3>
+                        <ul class="footer-widget-list-item">
+                            {% if not request.user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'authentication:loginTempl' %}">Se connecter</a>
+                            </li>
+                            {% else %}
+                                <li><a title="Mon compte" href="{% url 'profileUser:profileIndex' %}">{{request.user.first_name}}</a></li>
+                                <li><a href="{% url 'authentication:logout' %}">Se déconnecter</a></li>
+                            {% endif %}
+                            <!-- <li>
+                                <a id="showBox" style="display: none ;" href="{% url 'handleCart:viewCart' %}">Voir le panier</a>
+                            </li> -->
+                             <li>
+                                <a target="_blank" href="{% url 'authentication:buyerRuler' %}">Politique de l'acheteur</a>
+                            </li>
+                            {% if request.user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'shop:wishlist' %}">Ma liste de souhait</a>
+                            </li>
+                            {% endif %}
+                            <!-- <li>
+                                <a href="#">Track My Order</a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 pt-40">
+                    <div class="footer-contact-info">
+                        <h3 class="footer-widget-title">Avez-vous des questions? Appelez nous :</h3>
+                        <a class="number" href="tel:+237{{setting.phone}}">+237 {{setting.phone}}</a>
+                        <a class="number" href="tel:+237{{setting.orangeNber}}">+237 {{setting.orangeNber}}</a>
+                        <div class="address">
+                            <ul>
+                                <li>
+                                    {{setting.localisation}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="copyright">
+                        <span class="copyright-text">© 
+                            <script type="text/javascript">document.write( new Date().getFullYear() );</script>.
+                             {{setting.nameSite}}. 
+                             {{setting.ourSlogan}} 
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer Area End Here -->
+
+<!-- Begin Modal Area -->
+<div class="modal quick-view-modal fade" id="quickModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-tippy="Close" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-wrap row" id="bigDivModal">
+                   
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Area End Here -->
+
+<!-- Begin Scroll To Top -->
+<a class="scroll-to-top" href="">
+    <i class="fa fa-angle-double-up"></i>
+</a>
+<!-- Scroll To Top End Here -->
+
+</div>
+    <!-- Global Vendor, plugins JS -->
+</body>
+
+</html>

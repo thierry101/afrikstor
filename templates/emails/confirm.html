@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}
+    close order | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+{% load spaceNumber %}
+
+{% block content %}
+
+    <div class="body-section">
+        <br>
+        <br>
+        <br>
+        <h3 class="heading text-center text-uppercase"><strong>Confirmation commande</strong></h3>
+        <br>
+        
+        <br>
+    <div class="text-center">
+            <p>
+                Nous vous remercions pour la confiance que vous portez à {{setting.nameSite}}. <br>
+            
+                Le numéro de votre commande est <strong>{{order.orderNumber}}</strong>.            
+                Apres traitement vous recevrez par mail votre facture. <br>
+                <!-- Vous pouvez continuer vos achats en <a href="{% url 'home:homeIndex' %}"> cliquant ici</a> -->
+            </p>
+    </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}
+    login | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+
+{% block content %}
+
+     <!-- Begin Main Content Area -->
+    <main class="main-content">
+        <!-- <div class="breadcrumb-area breadcrumb-height" data-bg-image="{% static 'images/breadcrumb/bg/1-1-1919x388.jpg' %}">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-item">
+                            <h2 class="breadcrumb-heading">Se connecter & S'enregistrer</h2>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'home:homeIndex' %}">Acceuil</a>
+                                </li>
+                                <li>Se connecter & S'enregistrer</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="login-register-area section-space-y-axis-100">
+            <div class="container">
+                <div class="row">
+                    <!-- ************************ FOR LOGIN ***************************** -->
+                    <div class="col-lg-6" id="containerLogin">
+                        <form action="#">
+                            <div class="login-form">
+                                <h4 class="login-title text-center">Se connecter</h4>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label>Adresse Email*</label>
+                                        <input class="form-control" id="loginEmail" type="email" placeholder="Adresse Email">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label> <main>Mot de passe</main></label>
+                                        <input class="form-control" id="loginPassword" type="password" placeholder="Mot de passe">
+                                        <span class="text-danger" id="textError"></span>
+                                    </div>
+                                   
+                                    <div class="col-md-8">
+                                        <div class="check-box">
+                                            <input type="checkbox" id="remember_me">
+                                            <label for="remember_me">Se souvenir de moi</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 pt-1 mt-md-0">
+                                        <div class="forgotton-password_info">
+                                            <a id="forgotPasswordId" href="#"> Mot de passe oublié?</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 pt-5 text-center">
+                                        <button id="connectUserId" class="btn btn-custom-size lg-size btn-pronia-primary">Se connecter</button>
+                                        <br>
+                                        <h6>ou <br> Créer un compte client en</h6> <h2><a id="registerUserId" href="">cliquant ici</a></h2>
+                                         {% if debug_flag %}
+                                         <h6> ou <br>Créer un compte  vendeur en</h6> <h2><a target="_blank" href="http://127.0.0.1:4200/login">cliquant ici</a></h2>
+                                         {% else %}
+                                         <h6> ou <br>Créer un compte  vendeur en</h6> <h2><a target="_blank" href="https://afrikstor.ink">cliquant ici</a></h2>
+                                         {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- ********************** FOR FORGET PASSWORD ********************* -->
+                    <div style="display: none;" id="containerforgetPassword" class="col-lg-6" id="containerLogin">
+                        <form action="#">
+                            <div class="login-form">
+                                <h4 class="login-title">Réinitialisation de mot de passe</h4>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label>Adresse Email*</label>
+                                        <input class="form-control" id="emailResetPassword" type="email" placeholder="Adresse Email">
+                                        <span class="text-danger" id="emailResetPasswordError"></span>
+                                    </div>
+                                    <div class="col-lg-12 pt-5 text-center">
+                                        <button id="resetPasswordId" class="btn btn-custom-size lg-size btn-pronia-primary">Envoyer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ******************** FOR REGISTER ***************************** -->
+                    <div style="display: none;" id="containerRegister" class="col-lg-6 pt-5 pt-lg-0 text-center">
+                        <form action="#">
+                            <div class="login-form">
+                                <h4 class="login-title">S'enregistrer</h4>
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <label><strong>Nom</strong></label>
+                                        <input id="clientName" type="text" placeholder="Nom">
+                                        <span class="text-danger" id="clientNameError"></span>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label><strong>Prénom</strong></label>
+                                        <input id="clientSurname" type="text" placeholder="Prénom">
+                                        <span class="text-danger" id="clientSurnameError"></span>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label><strong>Email*</strong></label>
+                                        <input id="clientEmail" type="email" placeholder="Email">
+                                        <span class="text-danger" id="clientEmailError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label><strong>Mot de Passe</strong></label>
+                                        <input id="clientPassword" type="password" placeholder="Mot de passe">
+                                        <span class="text-danger" id="clientPasswordError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label><strong>Confirmer Mot de Passe</strong></label>
+                                        <input id="clientConfirm" type="password" placeholder="Confirmer mot de passe">
+                                        <span class="text-danger" id="clientConfirmError"></span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="check-box">
+                                            <input type="checkbox" id="dataConfidential">
+                                            <label for="dataConfidential"><a href="{% url 'authentication:confidData' %}" target='_blank'>Données et confidentialité</a></label>
+                                            <span class="text-danger" id="clientApprovError"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button id="createAccount" class="btn btn-custom-size lg-size btn-pronia-primary">S'enregistrer</button>
+                                            <br><h6>Avez vous déja un compte ?</h6>
+                                            <h6>Cliquez</h6> <h2><a href="" id="showConnectUser">ici pour vous connecter</a></h2>
+                                            {% if debug_flag %}
+                                            <h6>ou <br> Créer un compte vendeur en</h6> <h2><a target="_blank" href="http://127.0.0.1:4200/login">cliquant ici.</a></h2>
+                                            {% else %}
+                                            <h6>ou <br> Créer un compte vendeur en</h6> <h2><a target="_blank" href="https://afrikstor.ink">cliquant ici.</a></h2>
+                                            {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Main Content Area End Here -->
+
+
+
+
+{% endblock content %}

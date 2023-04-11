@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}
+wishlist | {{setting.nameSite}}
+{% endblock title %}
+{% load static %}
+{% load spaceNumber %}
+
+{% block content %}
+
+     <!-- Begin Main Content Area -->
+    <main class="main-content">
+        <div class="breadcrumb-area breadcrumb-height" data-bg-image="{% static 'images/breadcrumb/bg/1-1-1919x388.jpg' %}">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-item">
+                            <h2 class="breadcrumb-heading">Liste des souhaits</h2>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'home:homeIndex' %}">Acceuil</a>
+                                </li>
+                                <li>Wishlist</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wishlist-area section-space-y-axis-100">
+            <div class="container">
+                <div class="row">
+                    <div id="idWIshlist011" class="col-12">
+                        {% if wishlists|length > 0 %}
+                        <form action="javascript:void(0)">
+                            <div class="table-content table-responsive">
+                                <table id="idTableWishlist" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">Retirer</th>
+                                            <th class="product-thumbnail">images</th>
+                                            <th class="cart-product-name">Article</th>
+                                            <th class="product-price">Prix unitaire</th>
+                                            <th class="product-stock-status">Disponibilité</th>
+                                            <th class="cart_btn">Ajouter au panier</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for wishlist in wishlists %}
+                                        <tr>
+                                            <td class="product_remove">
+                                                <a class="removeWishlist" id="{{wishlist.product.id}}" href="#">
+                                                    <i id="{{wishlist.product.id}}" class="pe-7s-close" data-tippy="Retirer" data-tippy-inertia="true"
+                                                data-tippy-animation="shift-away" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
+                                                </a>
+                                            </td>
+                                            <td class="product-thumbnail">
+                                                <a href="{% url 'home:detailProd' wishlist.product.id %}">
+                                                    <img style="width:80px; height:95px" src="{{wishlist.product.mainImg.url}}" alt="Wishlist Thumbnail">
+                                                </a>
+                                            </td>
+                                            <td class="product-name"><a href="{% url 'home:detailProd' wishlist.product.id %}">{{wishlist.product.title}}</a></td>
+                                            <td class="product-price"><span class="amount">{{wishlist.product.price |floatformat:0 | intspace}} Fcfa</span></td>
+                                            <td class="product-stock-status"><span class="in-stock">in stock</span></td>
+                                            <td title="Ajouter au panier" id="{{wishlist.product.id}}" class="cart_btn addCartWishlist"><a id="{{wishlist.product.id}}" href="#">Acheter</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                        {% else %}
+                        <h1 class='text-center'>Votre liste de souhait est vide</h1>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Main Content Area End Here -->
+
+
+
+{% endblock content %}
