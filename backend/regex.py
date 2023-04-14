@@ -393,7 +393,8 @@ def updatePhone(key, field, errors):
 
 # ****************************** CHECK IF STRING AND CONVERT TO INTEGER ******************************************
 def convertToInt(key, sentence, message, errors):
-    if (isinstance(sentence, str) and len(sentence) > 1) or sentence == '':
+    # if (isinstance(sentence, str) and len(sentence) > 1) or sentence == '':
+    if sentence == '':
         errors[key] = f"Veuillez choisir {message}"
     else:
         if sentence:
