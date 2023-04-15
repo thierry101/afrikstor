@@ -184,7 +184,7 @@ AUTH_USER_MODEL = 'authentication.User'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://127.0.0.1:4200",
-    'http://afrikstor.ink ',
+    # 'http://afrikstor.ink ',
     'https://afrikstor.ink'
 ]
 

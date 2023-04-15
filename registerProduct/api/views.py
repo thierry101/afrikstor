@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 
 from authentication.authentication import JWTAuthentication
 from authentication.permissions import IsOwnerOrReadOnly, ProvidersPermissions, ValidatorsPermissions
-from backend.regex import checkExtensionImg, checkExtensionUpdateColorImg, checkExtensionImgUpdate, checkExtensionOfColorImg, checkExtensionOfManyImg, checkExtensionUpdateManyImg, checkLenOfField, checkPrices, checkSoldPrice, checkStatus, checkTableColor, checkTableId, convertToInt, deleteOneImg, deletePathManyImg, id_generator
+from backend.regex import checkExtensionImg, checkExtensionUpdateColorImg, checkExtensionImgUpdate, checkExtensionOfColorImg, checkExtensionOfManyImg, checkExtensionUpdateManyImg, checkLenOfField, checkPrices, checkSoldPrice, checkStatus, checkTableColor, checkTableId, convToString, convertToInt, deleteOneImg, deletePathManyImg, id_generator
 from backend.utils import sendMessage
 from registerProduct.api.serializers import RegisterProductSerializer
 from registerProduct.models import RegisterProduct
@@ -94,10 +94,14 @@ class RegisterProductAPIView(APIView):
         errors = {}
         tabOtherIMgs = []
         tabColorIMgs = []
+        cat_id = ''
+        # if data['sub_category_id'] == 'Choisir une sous-catégorie':
+        #     errors['sub_cat'] = 'Veilllez choisir une sous-catégorie'
+        # else:
+        sub_cat_id = convToString(
+        'sub_cat', data['sub_category_id'], 'une sous-catégorie', errors)
         cat_id = convertToInt(
             'cat_id', data['category_id'], 'une catégorie', errors)
-        sub_cat_id = convertToInt(
-            'sub_cat', data['sub_category_id'], 'une sous-catégorie', errors)
         brand_id = convertToInt(
             'brand_id', data['brand_id'], 'une marque', errors)
         name = checkLenOfField('name', data['name'], 2, errors)

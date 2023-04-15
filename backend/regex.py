@@ -390,11 +390,19 @@ def updatePhone(key, field, errors):
         else:
             return field
 
+# ************************************ NO FOR ALL PROJECT ********************************
+def convToString(key, sentence, message, errors):
+    if sentence and 'Choi' in sentence:
+        errors[key] = f"Veuillez choisir {message}"
+    else:
+        if sentence:
+            return int(sentence)
+        else:
+            pass
 
 # ****************************** CHECK IF STRING AND CONVERT TO INTEGER ******************************************
 def convertToInt(key, sentence, message, errors):
-    # if (isinstance(sentence, str) and len(sentence) > 1) or sentence == '':
-    if sentence == '':
+    if (isinstance(sentence, str) and len(sentence) > 1) or sentence == '':
         errors[key] = f"Veuillez choisir {message}"
     else:
         if sentence:
