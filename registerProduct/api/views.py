@@ -57,12 +57,14 @@ class GetAllProductsEditAPIView(APIView):
                 product.validateProd = False
                 product.save()
                 logo = SettingSite.objects.get(state=True).logo
+                setting = SettingSite.objects.filter(state=True).first()
                 path = f"{ request.scheme }://{ request.META.get('HTTP_HOST') }"
                 sendMessage(f"Raison du rejet de l'article {article}", 'emails/rejetMail.html',
                             {'user': user,
                              'article': article,
                              'logo': logo,
                              'path': path,
+                             'setting':setting,
                              'message': message}, settings.EMAIL_HOST_USER, (email,))
                 return Response('false', status=status.HTTP_200_OK)
             elif validProduct == True:
