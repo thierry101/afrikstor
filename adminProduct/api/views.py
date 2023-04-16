@@ -100,13 +100,13 @@ class CategoryDetailView(APIView):
                     # category.description = description
                     category.statut = statut
                     category.save()
-                    if data['logo']['name'] != '':
-                        format, imgstr = data['logo']['file'].split(';base64,')
+                    # if data['logo']['name'] != '':
+                    #     format, imgstr = data['logo']['file'].split(';base64,')
                         # You can save this as file instance.
                         # data = ContentFile(base64.b64decode(imgstr),
                         #                    name=str(slug)+str(nameMainImg))
                         # category.image = data
-                        category.save()
+                        # category.save()
                     serializer = CategorySerializer(category)
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 else:
